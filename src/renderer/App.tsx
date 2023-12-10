@@ -35,6 +35,7 @@ function Hello() {
           </button>
         </a>
       </div>
+      <div className='bg-green-400'>Hello World</div>
     </div>
   );
 }
