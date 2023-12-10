@@ -1,20 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Button, Textarea } from 'flowbite-react';
-import { ipcRenderer } from 'electron';
+import { Table, Button, } from 'flowbite-react';
 
 function ShortcutTable() {
-  const [shortcuts, setShortcuts] = useState([]);
+  
 
-  useEffect(() => {
-    ipcRenderer.send('get-shortcuts');
-    ipcRenderer.on('get-shortcuts-response', (event, data) => {
-      setShortcuts(data);
-    });
-
-    return () => {
-      ipcRenderer.removeAllListeners('get-shortcuts-response');
-    };
-  }, []);
+  
 
   return (
     <div className="overflow-x-auto bg-white flex flex-col justify-between">
@@ -29,7 +18,6 @@ function ShortcutTable() {
             <div className='flex p-4 h-[100px]'>
             <Button color="primary">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
                   height="16"
                   width="14"
                   viewBox="0 0 448 512"
@@ -43,7 +31,6 @@ function ShortcutTable() {
               </Button>
               <Button color="primary">
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
                   height="16"
                   width="16"
                   viewBox="0 0 512 512"
