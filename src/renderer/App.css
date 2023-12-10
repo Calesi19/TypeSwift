@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Racing';
+  src: url('../../assets/fonts/RacingSansOne-Regular.ttf') format('truetype');
+}
