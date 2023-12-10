@@ -5,7 +5,7 @@ import json  # Import the json module
 keyboard_controller = Controller()
 
 # Load expansions from a JSON file
-with open('/Users/carloslespin/Documents/GitHub/TypeSwift/electron/TypeSwift/src/main/shortcuts.json', 'r') as file:
+with open('/Users/carloslespin/Documents/GitHub/TypeSwift/src/main/shortcuts.json', 'r') as file:
     expansions = json.load(file)
 
 current_word = ""  # To keep track of the currently typed word
