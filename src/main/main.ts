@@ -14,6 +14,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { spawn, ChildProcess } from 'child_process';
+
 
 class AppUpdater {
   constructor() {
@@ -24,12 +26,36 @@ class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+let pythonProcess: ChildProcess | null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+const pythonScriptPath = app.isPackaged
+  ? path.join(process.resourcesPath, '/typeswift.py') // Adjust path for production
+  : path.join(__dirname, '/typeswift.py'); // Path for development
+
+// Start the Python script
+pythonProcess = spawn('python3', [pythonScriptPath]);
+
+pythonProcess.on('error', (error) => {
+  console.error(`Failed to start Python script: ${error.message}`);
 });
+
+// Modify the IPC event handler to toggle the Python script
+ipcMain.on('toggle-python-script', async (event, shouldRun) => {
+  if (shouldRun && !pythonProcess) {
+    // Start the Python script if it's not already running
+    pythonProcess = spawn('python3', [pythonScriptPath]);
+    pythonProcess.on('error', (error) => {
+      console.error(`Failed to start Python script: ${error.message}`);
+    });
+  } else if (!shouldRun && pythonProcess) {
+    // Stop the Python script if it's running
+    pythonProcess.kill();
+    pythonProcess = null;
+  }
+});
+
+
+
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -70,6 +96,7 @@ const createWindow = async () => {
   };
 
   mainWindow = new BrowserWindow({
+    title: 'TypeSwift',
     show: false,
     width: 1024,
     height: 728,
@@ -119,6 +146,11 @@ const createWindow = async () => {
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
+
+  if (pythonProcess) {
+    pythonProcess.kill();
+  }
+
   if (process.platform !== 'darwin') {
     app.quit();
   }
