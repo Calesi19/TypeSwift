@@ -22,6 +22,17 @@ db.serialize(() => {
   db.run("CREATE TABLE IF NOT EXISTS shortcuts (id INTEGER PRIMARY KEY, shortcut TEXT, phrase TEXT)");
 });
 
+console.log('inserting');
+
+db.all("SELECT * FROM shortcuts", [], (err: any, rows: any) => {
+  rows.forEach((row: any) => {
+    console.log(row.shortcut, row.phrase);
+  });
+
+  console.log('done');
+});
+
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -58,6 +69,13 @@ ipcMain.on('toggle-python-script', async (event, shouldRun) => {
     pythonProcess = null;
   }
 });
+
+ipcMain.on('fetch-shortcuts', async (event) => {
+  db.all("SELECT * FROM shortcuts", [], (err: any, rows: any) => {
+    event.reply('shortcuts-data', rows);
+  });
+});
+
 
 
 
