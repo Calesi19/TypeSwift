@@ -1,0 +1,5 @@
+{
+    "acmgreen": "Verified that ACM light is green on the TMC.",
+    "acmred": "Verified that ACM light is red on the TMC.",
+    "shoulderl": "Verified that lane is a shoulder lane. Shoulder lanes do not have normal traffic."
+}

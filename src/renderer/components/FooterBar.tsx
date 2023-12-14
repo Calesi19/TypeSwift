@@ -5,7 +5,7 @@ function FooterBar() {
   const [openDeletingModal, setOpenDeletingModal] = useState(false);
   const [openInfoModal, setOpenInfoModal] = useState(false);
   return (
-    <div className="pl-10 pr-8 bg-[#F9FAFB] w-full text-slate-500 text-sm flex justify-between">
+    <div className="sticky bottom-0 left-0 right-0 z-10 pl-10 pr-8 bg-[#F9FAFB] w-full text-slate-500 text-sm flex justify-between">
       <div className="py-1 line-clamp-1">
         Keystrokes saved: <span>0</span>
       </div>
@@ -75,47 +75,17 @@ function FooterBar() {
           <div className="space-y-6">
             <h2 className='font-bold'>Terms of Services</h2>
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              With less than a month to go before the European Union enacts new
-              consumer privacy laws for its citizens, companies around the world
-              are updating their terms of service agreements to comply.
+            The TypeSwift Terms of Service recommend users not to store any sensitive personal information within the app due to potential security risks. Additionally, as an open-source application, TypeSwift encourages users to contribute to its development and improvement, inviting community collaboration and enhancement of the app's features and functionality. Users are welcomed to modify and refine the app in alignment with their needs and expertise.
             </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              The European Union’s General Data Protection Regulation (G.D.P.R.)
-              goes into effect on May 25 and is meant to ensure a common set of
-              data rights in the European Union. It requires organizations to
-              notify users as soon as possible of high-risk data breaches that
-              could personally affect them.
-            </p>
+            
           </div>
+         
           <div className="mt-6 space-y-6">
             <h2 className='font-bold'>Privacy Policy</h2>
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              With less than a month to go before the European Union enacts new
-              consumer privacy laws for its citizens, companies around the world
-              are updating their terms of service agreements to comply.
+            TypeSwift does not store or upload any of your keystrokes or personal information. The app tracks the keystrokes for only for the current word being typed to enable the text extension functionality but does not record, store, or transmit this data externally.
             </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              The European Union’s General Data Protection Regulation (G.D.P.R.)
-              goes into effect on May 25 and is meant to ensure a common set of
-              data rights in the European Union. It requires organizations to
-              notify users as soon as possible of high-risk data breaches that
-              could personally affect them.
-            </p>
-          </div>
-          <div className="mt-6 space-y-6">
-            <h2 className='font-bold'>Privacy Policy</h2>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              With less than a month to go before the European Union enacts new
-              consumer privacy laws for its citizens, companies around the world
-              are updating their terms of service agreements to comply.
-            </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              The European Union’s General Data Protection Regulation (G.D.P.R.)
-              goes into effect on May 25 and is meant to ensure a common set of
-              data rights in the European Union. It requires organizations to
-              notify users as soon as possible of high-risk data breaches that
-              could personally affect them.
-            </p>
+            
           </div>
         </Modal.Body>
         
