@@ -7,7 +7,7 @@ function FooterBar() {
   return (
     <div className="sticky bottom-0 left-0 right-0 z-10 pl-10 pr-8 bg-[#F9FAFB] w-full text-slate-500 text-sm flex justify-between">
       <div className="py-1 line-clamp-1">
-        Keystrokes saved: <span>0</span>
+        Keystrokes saved: <span>14,324</span>
       </div>
 
       <div className="flex">
