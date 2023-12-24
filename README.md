@@ -25,7 +25,7 @@ A detailed explanation of how to use TypeSwift, including:
 - Troubleshooting common issues.
 
 ## License
-TypeSwift is released under [LICENSE NAME]. See the LICENSE file for more details.
+TypeSwift is released under the MIT License. See the LICENSE file for more details.
 
 
 # Helpful Resources
