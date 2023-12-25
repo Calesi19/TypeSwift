@@ -85,7 +85,7 @@ function FooterBar() {
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             TypeSwift does not store or upload any of your keystrokes or personal information. The app tracks the keystrokes for only for the current word being typed to enable the text extension functionality but does not record, store, or transmit this data externally.
             </p>
-            
+             
           </div>
         </Modal.Body>
         

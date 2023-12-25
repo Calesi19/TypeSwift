@@ -1,10 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Button } from 'flowbite-react';
-import { Container, Link } from 'react-floating-action-button';
-import { FaPlus } from 'react-icons/fa';
+import {
+  Table,
+  Button,
+  Modal,
+  Tooltip,
+  Label,
+  TextInput,
+  Textarea,
+} from 'flowbite-react';
+import { Container } from 'react-floating-action-button';
+import { FaPlus, FaEdit } from 'react-icons/fa';
+import { MdDelete } from 'react-icons/md';
+
+
 
 function ShortcutTable() {
-  const shortcuts = [
+  // Initial shortcuts state
+  const [shortcuts, setShortcuts] = useState([
+    // ... (your initial shortcuts)
     {
       id: 'acmgreen',
       shortcut: 'acmgreen',
@@ -21,7 +34,49 @@ function ShortcutTable() {
       phrase:
         'Verified that lane is a shoulder lane. Shoulder lanes do not have normal traffic.',
     },
-  ];
+  ]);
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openCreateModal, setOpenCreateModal] = useState(false);
+  const [currentShortcut, setCurrentShortcut] = useState({});
+
+  const handleEdit = (shortcut: any) => {
+    setCurrentShortcut(shortcut);
+    setOpenEditModal(true);
+  };
+
+  const handleDelete = (shortcut: any) => {
+    setCurrentShortcut(shortcut);
+    setOpenDeleteModal(true);
+  };
+
+  const deleteShortcut = () => {
+    setShortcuts(shortcuts.filter((s) => s.id !== currentShortcut.id));
+    setOpenDeleteModal(false);
+  };
+
+  const saveChanges = (updatedShortcut: any) => {
+    setShortcuts(
+      shortcuts.map((s) => (s.id === updatedShortcut.id ? updatedShortcut : s)),
+    );
+    setOpenEditModal(false);
+  };
+
+  const addShortcut = (newShortcut: any) => {
+    setShortcuts([...shortcuts, newShortcut]);
+    setOpenCreateModal(false);
+  };
+
+  // Update the Shortcut in the Modal
+const handleShortcutChange = (e) => {
+  setCurrentShortcut({ ...currentShortcut, shortcut: e.target.value });
+};
+
+// Update the Phrase in the Modal
+const handlePhraseChange = (e) => {
+  setCurrentShortcut({ ...currentShortcut, phrase: e.target.value });
+};
 
   return (
     <div className="overflow-x-auto bg-white flex flex-col justify-between">
@@ -36,23 +91,19 @@ function ShortcutTable() {
             <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
               <Table.Cell>
                 <div className="flex p-1 h-[64px]">
-                  <Button color="primary" className="hover:bg-red-200">
-                    <svg height="16" width="14" viewBox="0 0 448 512">
-                      <path
-                        opacity="1"
-                        fill="#1E3050"
-                        d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"
-                      />
-                    </svg>
+                  <Button
+                    color="primary"
+                    className="hover:bg-red-200"
+                    onClick={() => handleDelete(shortcut)}
+                  >
+                    <MdDelete size={20} />
                   </Button>
-                  <Button color="primary" className="hover:bg-blue-200">
-                    <svg height="16" width="16" viewBox="0 0 512 512">
-                      <path
-                        opacity="1"
-                        fill="#1E3050"
-                        d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                      />
-                    </svg>{' '}
+                  <Button
+                    color="primary"
+                    className="hover:bg-blue-200"
+                    onClick={() => handleEdit(shortcut)}
+                  >
+                    <FaEdit size={18} />
                   </Button>
                 </div>
               </Table.Cell>
@@ -67,12 +118,126 @@ function ShortcutTable() {
             </Table.Row>
           ))}
         </Table.Body>
+
         <Container>
-          <Link href="#" tooltip="Create Shortcut">
-            <FaPlus />
-          </Link>
+          <Tooltip content="Add Shortcut" placement="left">
+            <Button onClick={() => setOpenCreateModal(true)}>
+              <FaPlus />
+            </Button>
+          </Tooltip>
         </Container>
       </Table>
+
+      {/* Create Modal */}
+      <Modal show={openCreateModal} onClose={() => setOpenCreateModal(false)}>
+        <Modal.Header>Add Shortcut</Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="email1" value="Shortcut" />
+              </div>
+              <TextInput id="new_shortcut" type="text" required />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label htmlFor="password1" value="Phrase" />
+              </div>
+              <Textarea id="new_phrase" required rows={4} />
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            className="w-full"
+            onClick={() =>
+              addShortcut({
+                id: 'hello',
+                shortcut: 'hello',
+                phrase: 'My name is Jeff.',
+              })
+            }
+          >
+            Add Shortcut
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* Delete Modal */}
+      <Modal show={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
+        <Modal.Header>Delete Shortcut</Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            Are you sure you want to delete this shortcut? This action cannot be
+            undone.
+          </div>
+
+          <TextInput
+            type="text"
+            value={currentShortcut ? currentShortcut.shortcut : ''}
+            disabled
+            className="mt-5 font-semibold"
+            onChange={(e) =>
+              setCurrentShortcut({
+                ...currentShortcut,
+                shortcut: e.target.value,
+              })
+            }
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            color="failure"
+            className="w-full"
+            onClick={() => setOpenDeleteModal(false)}
+          >
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Edit Modal */}
+      <Modal show={openEditModal} onClose={() => setOpenEditModal(false)}>
+        <Modal.Header>Edit Shortcut</Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            <div>
+              <div className="mb-2 block">
+                <Label value="Shortcut" />
+              </div>
+              <TextInput
+                value={currentShortcut ? currentShortcut.shortcut : ''}
+                onChange={handleShortcutChange}
+                required
+              />
+            </div>
+            <div>
+              <div className="mb-2 block">
+                <Label value="Phrase" />
+              </div>
+              <Textarea
+                value={currentShortcut ? currentShortcut.phrase : ''}
+                required
+                rows={4}
+                onChange={handlePhraseChange}
+              />
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            className="w-full"
+            onClick={() =>
+              saveChanges({
+                id: currentShortcut.id,
+                shortcut: 'hello',
+                phrase: 'My name is Jeff.',
+              })
+            }
+          >
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
