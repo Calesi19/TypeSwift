@@ -20,3 +20,4 @@ db.close((err: { message: any; }) => {
   }
   console.log('Close the database connection.');
 });
+

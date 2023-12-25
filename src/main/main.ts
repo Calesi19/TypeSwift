@@ -15,8 +15,9 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { spawn, ChildProcess } from 'child_process';
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./shortcuts.sqlite3');
+import ShortcutsController from './Controller';
+
+const shortcutsController = ShortcutsController.getInstance();
 
 db.serialize(() => {
   db.run("CREATE TABLE IF NOT EXISTS shortcuts (id INTEGER PRIMARY KEY, shortcut TEXT, phrase TEXT)");
@@ -70,10 +71,12 @@ ipcMain.on('toggle-python-script', async (event, shouldRun) => {
   }
 });
 
-ipcMain.on('fetch-shortcuts', async (event) => {
-  db.all("SELECT * FROM shortcuts", [], (err: any, rows: any) => {
-    event.reply('shortcuts-data', rows);
-  });
+
+
+ipcMain.on('get-all-shortcuts', (event) => {
+    shortcutsController.getAllShortcuts((err, rows) => {
+        event.reply('get-all-shortcuts-response', err ? [] : rows);
+    });
 });
 
 
